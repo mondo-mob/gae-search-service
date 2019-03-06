@@ -3,7 +3,7 @@ GAE Search service proxy (Java 8)
 
 This provides a way of accessing the GAE text search service for applications which do not have first class access to it (for example node on GAE). It exposes capability to create/update indexes and to run queries.
 
-The intention is it runs within the same GCP project as the main application as a `service` called search-service. For example, if your GCP project is called `sargon-pay-dev` the service will run at `https://search-service-dot-sargon-pay-dev.appspot.com`.
+The intention is it runs within the same GCP project as the main application as a GAE service called `search-service`. For example, if your GCP project is called `sargon-pay-dev` the service will run at `https://search-service-dot-sargon-pay-dev.appspot.com`.
 
 ### Running locally
 
@@ -19,7 +19,7 @@ where {PROJECT_ID} is your GCP project id eg. `sargon-pay-dev`
 Usage
 =====
 
-The relevant endpoints are `/index` and `/query`. The `SearchService` in `@3wks/gae-node-nestjs` provides a generic, convenient way to execute index and query operations.
+The relevant endpoints are `/index` and `/query`. The `SearchService` in `@3wks/gae-node-nestjs` (https://github.com/3wks/gae-node-nestjs) provides a generic, convenient way to execute index and query operations.
 
 Current limitations
 ===================
