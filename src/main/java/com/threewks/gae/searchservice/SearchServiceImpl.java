@@ -1,4 +1,4 @@
-package com.example.appengine.java8;
+package com.threewks.gae.searchservice;
 
 import com.google.appengine.api.search.Document;
 import com.google.appengine.api.search.Field;
@@ -22,7 +22,7 @@ public class SearchServiceImpl {
 		this.searchService = SearchServiceFactory.getSearchService();
 	}
 
-	public void index(com.example.appengine.java8.IndexOperation operation) {
+	public void index(IndexOperation operation) {
 		List<Document> documents = operation.getEntries()
 				.stream()
 				.map(indexEntry -> {
@@ -52,7 +52,7 @@ public class SearchServiceImpl {
 				.collect(Collectors.toList());
 	}
 
-	public List<String> query(com.example.appengine.java8.QueryOperation operation) {
+	public List<String> query(QueryOperation operation) {
 		String query = toQuery(operation.getFields());
 
 		Index index = getIndex(operation.getEntityName());

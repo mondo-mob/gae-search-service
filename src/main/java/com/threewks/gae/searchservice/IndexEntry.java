@@ -1,4 +1,4 @@
-package com.example.appengine.java8;
+package com.threewks.gae.searchservice;
 
 import java.util.Map;
 

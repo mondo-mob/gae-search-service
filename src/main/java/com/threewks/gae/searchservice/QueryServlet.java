@@ -1,4 +1,4 @@
-package com.example.appengine.java8;
+package com.threewks.gae.searchservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class QueryServlet extends HttpServlet {
 
 	private final Gson gson;
-	private final com.example.appengine.java8.SearchServiceImpl searchService;
+	private final SearchServiceImpl searchService;
 
 	public QueryServlet() {
 		this.gson = new GsonBuilder().create();
-		this.searchService = new com.example.appengine.java8.SearchServiceImpl();
+		this.searchService = new SearchServiceImpl();
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class QueryServlet extends HttpServlet {
 
 		String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-		com.example.appengine.java8.QueryOperation operation = gson.fromJson(body, com.example.appengine.java8.QueryOperation.class);
+		QueryOperation operation = gson.fromJson(body, QueryOperation.class);
 
 		List<String> ids = searchService.query(operation);
 

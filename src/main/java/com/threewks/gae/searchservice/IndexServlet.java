@@ -1,5 +1,5 @@
 
-package com.example.appengine.java8;
+package com.threewks.gae.searchservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexServlet extends HttpServlet {
 
 	private final Gson gson;
-	private final com.example.appengine.java8.SearchServiceImpl searchService;
+	private final SearchServiceImpl searchService;
 
 	public IndexServlet() {
 		this.gson = new GsonBuilder().create();
-		this.searchService = new com.example.appengine.java8.SearchServiceImpl();
+		this.searchService = new SearchServiceImpl();
 	}
 
 	// TODO all this should be done on a queue (and sequentially - max workers 1 maybe?)
@@ -31,7 +31,7 @@ public class IndexServlet extends HttpServlet {
 
 		String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-		com.example.appengine.java8.IndexOperation operation = gson.fromJson(body, com.example.appengine.java8.IndexOperation.class);
+		IndexOperation operation = gson.fromJson(body, IndexOperation.class);
 
 		searchService.index(operation);
 
