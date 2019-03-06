@@ -1,70 +1,33 @@
-HelloWorld for App Engine Standard (Java 8)
+GAE Search service proxy (Java 8) 
 ============================
 
-This sample demonstrates how to deploy an application on Google App Engine.
+This provides a way of accessing the GAE text search service for applications which do not have first class access to it (for example node on GAE). It exposes capability to create/update indexes and to run queries.
 
-See the [Google App Engine standard environment documentation][ae-docs] for more
-detailed instructions.
+The intention is it runs within the same GCP project as the main application as a `service` called search-service. For example, if your GCP project is called `sargon-pay-dev` the service will run at `https://search-service-dot-sargon-pay-dev.appspot.com`.
 
-[ae-docs]: https://cloud.google.com/appengine/docs/java/
-
-
-* [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-* [Maven](https://maven.apache.org/download.cgi) (at least 3.5)
-* [Gradle](https://gradle.org/gradle-download/) (optional)
-* [Google Cloud SDK](https://cloud.google.com/sdk/) (aka gcloud)
-
-## Setup
-
-• Download and initialize the [Cloud SDK](https://cloud.google.com/sdk/)
-
-    gcloud init
-
-* Create an App Engine app within the current Google Cloud Project
-
-    gcloud app create
-
-## Maven
 ### Running locally
 
     mvn appengine:run
 
-To use vist: http://localhost:8080/
-
 ### Deploying
 
-    mvn appengine:deploy
+    CLOUDSDK_CORE_PROJECT={PROJECT_ID} mvn appengine:deploy
 
-To use vist:  https://YOUR-PROJECT-ID.appspot.com
+where {PROJECT_ID} is your GCP project id eg. `sargon-pay-dev`
 
-## Gradle
-### Running locally
 
-    gradle appengineRun
+Usage
+=====
 
-If you do not have gradle installed, you can run using `./gradlew appengineRun`.
+The relevant endpoints are `/index` and `/query`. The `SearchService` in `@3wks/gae-node-nestjs` provides a generic, convenient way to execute index and query operations.
 
-To use vist: http://localhost:8080/
+Current limitations
+===================
 
-### Deploying
+- The only operation supported at the moment is equals (and IN/OR)
 
-    gradle appengineDeploy
+- Delete operations are not yet supported
 
-If you do not have gradle installed, you can deploy using `./gradlew appengineDeploy`.
+- Only string fields are supported for indexing and only single strings or array of strings can be used for querying at the moment. 
+There is a lot of conversion logic in https://github.com/3wks/spring-boot-gae we can probably take.
 
-To use vist:  https://YOUR-PROJECT-ID.appspot.com
-
-## Testing
-
-    mvn verify
-
- or
-
-    gradle test
-
-As you add / modify the source code (`src/main/java/...`) it's very useful to add [unit testing](https://cloud.google.com/appengine/docs/java/tools/localunittesting)
-to (`src/main/test/...`).  The following resources are quite useful:
-
-* [Junit4](http://junit.org/junit4/)
-* [Mockito](http://mockito.org/)
-* [Truth](http://google.github.io/truth/)
