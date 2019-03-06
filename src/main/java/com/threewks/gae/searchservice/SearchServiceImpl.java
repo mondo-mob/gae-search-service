@@ -8,7 +8,6 @@ import com.google.appengine.api.search.Results;
 import com.google.appengine.api.search.ScoredDocument;
 import com.google.appengine.api.search.SearchService;
 import com.google.appengine.api.search.SearchServiceFactory;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,7 @@ public class SearchServiceImpl {
 	private String getQueryFragment(String fieldName, Object targetValue) {
 		if (targetValue instanceof List) {
 			List<String> values = (List<String>) targetValue;
-			return fieldName + " = " + StringUtils.join(values, " OR ");
+			return fieldName + " = " + String.join(" OR ", values);
 		}
 
 		return fieldName + " = " + targetValue;
