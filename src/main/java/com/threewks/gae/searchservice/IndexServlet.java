@@ -23,8 +23,6 @@ public class IndexServlet extends HttpServlet {
 		this.searchService = new SearchServiceImpl();
 	}
 
-	// TODO all this should be done on a queue (and sequentially - max workers 1 maybe?)
-
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {

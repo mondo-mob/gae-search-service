@@ -16,8 +16,10 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl {
 
 	private final SearchService searchService;
+	private final FieldMapper fieldMapper;
 
 	public SearchServiceImpl() {
+		this.fieldMapper = new FieldMapper();
 		this.searchService = SearchServiceFactory.getSearchService();
 	}
 
@@ -28,7 +30,7 @@ public class SearchServiceImpl {
 					Document.Builder docBuilder = Document.newBuilder();
 					docBuilder.setId(indexEntry.getId());
 
-					List<Field> fields = toFields(indexEntry.getFields());
+					List<Field> fields = fieldMapper.map(indexEntry.getFields());
 					fields.forEach(docBuilder::addField);
 
 					return docBuilder.build();
@@ -37,18 +39,6 @@ public class SearchServiceImpl {
 
 		Index index = getIndex(operation.getEntityName());
 		index.put(documents);
-	}
-
-	private List<Field> toFields(Map<String, String> fields) {
-		return fields.keySet()
-				.stream()
-				.map(fieldName -> {
-					Field.Builder fieldBuilder = Field.newBuilder();
-					fieldBuilder.setName(fieldName);
-					fieldBuilder.setText(fields.get(fieldName));
-					return fieldBuilder.build();
-				})
-				.collect(Collectors.toList());
 	}
 
 	public List<String> query(QueryOperation operation) {

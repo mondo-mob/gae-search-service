@@ -4,13 +4,13 @@ import java.util.Map;
 
 public class IndexEntry {
 	private String id;
-	private Map<String, String> fields;
+	private Map<String, Object> fields;
 
 	public String getId() {
 		return id;
 	}
 
-	public Map<String, String> getFields() {
+	public Map<String, Object> getFields() {
 		return fields;
 	}
 }
