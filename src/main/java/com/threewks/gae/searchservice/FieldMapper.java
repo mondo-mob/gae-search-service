@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class FieldMapper {
 
+	public static final String NESTED_OBJECT_DELIMITER = "__";
+
 	public List<Field> map(Map<String, Object> fields) {
 		return toFields("", fields);
 	}
@@ -15,11 +17,12 @@ public class FieldMapper {
 	private List<Field> toFields(String prefix, Map<String, Object> fields) {
 		List<Field> mappedFields = new ArrayList<>();
 		for (String fieldName : fields.keySet()) {
+			String key = prefix + fieldName;
 			Object value = fields.get(fieldName);
 			if (value instanceof String) {
-				mappedFields.add(toField(prefix + fieldName, (String)value));
+				mappedFields.add(toField(key, (String)value));
 			} else {
-				mappedFields.addAll(toFields(prefix + fieldName + "__", (Map<String, Object>)value));
+				mappedFields.addAll(toFields(key + NESTED_OBJECT_DELIMITER, (Map<String, Object>)value));
 			}
 		}
 
