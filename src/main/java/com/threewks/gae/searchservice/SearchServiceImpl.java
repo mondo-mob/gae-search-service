@@ -80,12 +80,13 @@ public class SearchServiceImpl {
 	}
 
 	private String getQueryFragment(String fieldName, Object targetValue) {
+		String normalisedFieldName = fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER);
 		if (targetValue instanceof List) {
 			List<String> values = (List<String>) targetValue;
-			return fieldName + " = " + String.join(" OR ", values);
+			return normalisedFieldName + " = " + String.join(" OR ", values);
 		}
 
-		return fieldName + " = " + targetValue;
+		return normalisedFieldName + " = " + targetValue;
 	}
 
 	private Index getIndex(String name) {
