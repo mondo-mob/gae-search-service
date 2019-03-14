@@ -72,21 +72,22 @@ public class SearchServiceImpl {
 		return builder.build();
 	}
 
-	private String toQuery(Map<String, Object> fields) {
+	private String toQuery(Map<String, Predicate> fields) {
 		return fields.keySet()
 				.stream()
 				.map(fieldName -> getQueryFragment(fieldName, fields.get(fieldName)))
 				.collect(Collectors.joining(" "));
 	}
 
-	private String getQueryFragment(String fieldName, Object targetValue) {
-		String normalisedFieldName = fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER);
-		if (targetValue instanceof List) {
-			List<String> values = (List<String>) targetValue;
-			return normalisedFieldName + " = " + String.join(" OR ", values);
+	private String getQueryFragment(String fieldName, Predicate predicate) {
+		String prefix = predicate.getOp().equals("!=") ? "NOT " : "";
+		String fragment = String.format("%s%s = ", prefix, fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER));
+		if (predicate.getValue() instanceof List) {
+			List<String> values = (List<String>) predicate.getValue();
+			return String.format("%s(%s)", fragment, String.join(" OR ", values));
 		}
 
-		return normalisedFieldName + " = " + targetValue;
+		return fragment + predicate.getValue();
 	}
 
 	private Index getIndex(String name) {

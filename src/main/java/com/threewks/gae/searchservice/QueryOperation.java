@@ -5,14 +5,14 @@ import java.util.Map;
 public class QueryOperation {
 
 	private String entityName;
-	private Map<String, Object> fields;
+	private Map<String, Predicate> fields;
 	private QuerySort sort;
 
 	public String getEntityName() {
 		return entityName;
 	}
 
-	public Map<String, Object> getFields() {
+	public Map<String, Predicate> getFields() {
 		return fields;
 	}
 
