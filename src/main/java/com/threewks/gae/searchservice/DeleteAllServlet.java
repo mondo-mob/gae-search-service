@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "Delete", value = "/delete")
+@WebServlet(name = "DeleteAll", value = "/deleteAll")
 public class DeleteAllServlet extends HttpServlet {
 
 	private final Gson gson;
@@ -29,7 +29,8 @@ public class DeleteAllServlet extends HttpServlet {
 
 		DeleteAllOperation operation = gson.fromJson(body, DeleteAllOperation.class);
 
-		searchService.deleteAll(operation);
+		int count = searchService.deleteAll(operation);
+		System.out.println(String.format("Deleted %s indexes", count));
 
 		response.setContentType("text/plain");
 		response.setStatus(204);
