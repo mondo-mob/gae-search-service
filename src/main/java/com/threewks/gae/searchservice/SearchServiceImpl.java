@@ -45,6 +45,11 @@ public class SearchServiceImpl {
 		index.put(documents);
 	}
 
+	public void delete(DeleteOperation operation) {
+		Index index = getIndex(operation.getEntityName());
+		index.delete(operation.getIds());
+	}
+
 	public List<String> query(QueryOperation operation) {
 		String queryStr = toQuery(operation.getFields());
 
