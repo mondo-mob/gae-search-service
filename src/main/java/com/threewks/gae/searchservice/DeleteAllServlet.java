@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "Delete", value = "/delete")
-public class DeleteServlet extends HttpServlet {
+public class DeleteAllServlet extends HttpServlet {
 
 	private final Gson gson;
 	private final SearchServiceImpl searchService;
 
-	public DeleteServlet() {
+	public DeleteAllServlet() {
 		this.gson = new GsonBuilder().create();
 		this.searchService = new SearchServiceImpl();
 	}
@@ -27,9 +27,9 @@ public class DeleteServlet extends HttpServlet {
 
 		String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-		DeleteOperation operation = gson.fromJson(body, DeleteOperation.class);
+		DeleteAllOperation operation = gson.fromJson(body, DeleteAllOperation.class);
 
-		searchService.delete(operation);
+		searchService.deleteAll(operation);
 
 		response.setContentType("text/plain");
 		response.setStatus(204);

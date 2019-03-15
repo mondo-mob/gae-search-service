@@ -2,6 +2,8 @@ package com.threewks.gae.searchservice;
 
 import com.google.appengine.api.search.Document;
 import com.google.appengine.api.search.Field;
+import com.google.appengine.api.search.GetRequest;
+import com.google.appengine.api.search.GetResponse;
 import com.google.appengine.api.search.Index;
 import com.google.appengine.api.search.IndexSpec;
 import com.google.appengine.api.search.Query;
@@ -13,6 +15,7 @@ import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.appengine.api.search.SortExpression;
 import com.google.appengine.api.search.SortOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,9 +48,23 @@ public class SearchServiceImpl {
 		index.put(documents);
 	}
 
-	public void delete(DeleteOperation operation) {
+	public int deleteAll(DeleteAllOperation operation) {
+		int count = 0;
 		Index index = getIndex(operation.getEntityName());
-		index.delete(operation.getIds());
+		GetRequest request = GetRequest.newBuilder().setReturningIdsOnly(true).setLimit(200).build();
+		GetResponse<Document> response = index.getRange(request);
+
+		// can only delete documents in blocks of 200 so we need to iterate until they're all gone
+		while (!response.getResults().isEmpty()) {
+			List<String> ids = new ArrayList<>();
+			for (Document document : response) {
+				ids.add(document.getId());
+			}
+			index.delete(ids);
+			count += ids.size();
+			response = index.getRange(request);
+		}
+		return count;
 	}
 
 	public List<String> query(QueryOperation operation) {
