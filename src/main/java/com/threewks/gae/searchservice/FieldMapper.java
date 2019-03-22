@@ -20,7 +20,10 @@ public class FieldMapper {
 			String key = prefix + fieldName;
 			Object value = fields.get(fieldName);
 			if (value instanceof String) {
-				mappedFields.add(toField(key, (String)value));
+				mappedFields.add(toField(key, (String) value));
+			} else if (value instanceof List){
+				List<Map<String, Object>> values = (List<Map<String, Object>>) value;
+				values.forEach(v -> mappedFields.addAll(toFields(key + NESTED_OBJECT_DELIMITER, v)));
 			} else {
 				mappedFields.addAll(toFields(key + NESTED_OBJECT_DELIMITER, (Map<String, Object>)value));
 			}
