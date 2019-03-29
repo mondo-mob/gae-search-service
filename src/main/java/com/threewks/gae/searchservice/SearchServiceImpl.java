@@ -106,7 +106,8 @@ public class SearchServiceImpl {
 		String fragment = String.format("%s%s = ", prefix, fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER));
 		if (predicate.getValue() instanceof List) {
 			List<String> values = (List<String>) predicate.getValue();
-			return String.format("%s(%s)", fragment, String.join(" OR ", values));
+			String valueFragment = values.isEmpty() ? "__EMPTY_LIST_MASSIVE_HACK__" : String.join(" OR ", values);
+			return String.format("%s(%s)", fragment, valueFragment);
 		}
 
 		return fragment + predicate.getValue();
