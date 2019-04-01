@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 public class FieldMapperTest {
 
@@ -19,6 +20,7 @@ public class FieldMapperTest {
 	private String payload = "{"
 			+ "  \"orgId\": \"TIDSWELL\","
 			+ "  \"fundId\": \"fund123\","
+			+ "  \"paymentDate\": \"2019-09-08T14:00:00.000Z\","
 			+ "  \"level2\": {"
 			+ "    \"level2Key\": \"level2Value\""
 			+ "  },"
@@ -38,12 +40,16 @@ public class FieldMapperTest {
 		List<Field> fields = mapper.map(fieldsInput);
 		System.out.println(fields);
 
-		assertThat(fields.size(), is(5));
+		assertThat(fields.size(), is(6));
 		assertField(fields.get(0), "orgId", "TIDSWELL");
 		assertField(fields.get(1), "fundId", "fund123");
-		assertField(fields.get(2), "level2__level2Key", "level2Value");
-		assertField(fields.get(3), "level3__created__user", "glenn");
-		assertField(fields.get(4), "level3__created__time", "blahhh");
+		assertThat(fields.get(2).getName(), is("paymentDate"));
+		assertThat(fields.get(2).getDate(), is(notNullValue()));
+
+		assertField(fields.get(3), "level2__level2Key", "level2Value");
+		assertField(fields.get(4), "level3__created__user", "glenn");
+		assertField(fields.get(5), "level3__created__time", "blahhh");
+
 	}
 
 	private void assertField(Field field, String expectedName, String expectedValue) {

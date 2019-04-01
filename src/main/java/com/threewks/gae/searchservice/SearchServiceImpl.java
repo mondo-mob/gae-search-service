@@ -15,10 +15,14 @@ import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.appengine.api.search.SortExpression;
 import com.google.appengine.api.search.SortOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.threewks.gae.searchservice.DateFieldFormatter.getDate;
+import static com.threewks.gae.searchservice.DateFieldFormatter.isDate;
 
 public class SearchServiceImpl {
 
@@ -69,6 +73,7 @@ public class SearchServiceImpl {
 
 	public List<String> query(QueryOperation operation) {
 		String queryStr = toQuery(operation.getFields());
+		System.out.println("queryString " + queryStr);
 
 		Index index = getIndex(operation.getEntityName());
 		Query query = Query.newBuilder()
@@ -103,14 +108,26 @@ public class SearchServiceImpl {
 
 	private String getQueryFragment(String fieldName, Predicate predicate) {
 		String prefix = predicate.getOp().equals("!=") ? "NOT " : "";
-		String fragment = String.format("%s%s = ", prefix, fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER));
+		String operator = predicate.getOp() != null && !predicate.getOp().equals("!=") ? predicate.getOp() : "=";
+
+
+		String fragment = String.format("%s%s %s ", prefix, fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER), operator);
 		if (predicate.getValue() instanceof List) {
 			List<String> values = (List<String>) predicate.getValue();
 			String valueFragment = values.isEmpty() ? "__EMPTY_LIST_MASSIVE_HACK__" : String.join(" OR ", values);
 			return String.format("%s(%s)", fragment, valueFragment);
 		}
 
-		return fragment + predicate.getValue();
+		return fragment + getPredicateValue(predicate.getValue());
+	}
+
+	private Object getPredicateValue(Object value) {
+		if (isDate(value)){
+			String pattern = "yyyy-MM-dd";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+			return simpleDateFormat.format(getDate(value));
+		}
+		return value;
 	}
 
 	private Index getIndex(String name) {
