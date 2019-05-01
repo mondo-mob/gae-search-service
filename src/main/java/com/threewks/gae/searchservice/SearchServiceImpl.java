@@ -94,7 +94,7 @@ public class SearchServiceImpl {
 				.setExpression(sort.getField().replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER))
 				.setDirection(sort.isDescending() ? SortExpression.SortDirection.DESCENDING : SortExpression.SortDirection.ASCENDING)
 				.build();
-			builder.setSortOptions(SortOptions.newBuilder().addSortExpression(sortExpression).build());
+			builder.setSortOptions(SortOptions.newBuilder().addSortExpression(sortExpression).setLimit(200).build());
 		}
 		return builder.build();
 	}

@@ -30,6 +30,9 @@ public class FieldMapper {
                 } else {
                     mappedFields.add(createTextField(key, field));
                 }
+
+            } else if (!isComplexObject && field instanceof Boolean) {
+                mappedFields.add(createTextField(key, field.toString()));
             } else if (!isComplexObject && field instanceof Number) {
                 mappedFields.add(createNumberField(key, field));
             } else if (field instanceof List) {
