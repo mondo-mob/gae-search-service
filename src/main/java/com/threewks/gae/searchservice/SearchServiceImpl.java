@@ -88,13 +88,13 @@ public class SearchServiceImpl {
 	}
 
 	private QueryOptions queryOptions(QuerySort sort) {
-		QueryOptions.Builder builder = QueryOptions.newBuilder();
+		QueryOptions.Builder builder = QueryOptions.newBuilder().setLimit(600);
 		if (sort != null) {
 			SortExpression sortExpression = SortExpression.newBuilder()
 				.setExpression(sort.getField().replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER))
 				.setDirection(sort.isDescending() ? SortExpression.SortDirection.DESCENDING : SortExpression.SortDirection.ASCENDING)
 				.build();
-			builder.setSortOptions(SortOptions.newBuilder().addSortExpression(sortExpression).setLimit(200).build());
+			builder.setSortOptions(SortOptions.newBuilder().addSortExpression(sortExpression).build());
 		}
 		return builder.build();
 	}
