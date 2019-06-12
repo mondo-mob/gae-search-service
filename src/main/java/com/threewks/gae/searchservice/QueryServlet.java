@@ -30,11 +30,11 @@ public class QueryServlet extends HttpServlet {
 
 		QueryOperation operation = gson.fromJson(body, QueryOperation.class);
 
-		List<String> ids = searchService.query(operation);
+		QueryResults results = searchService.query(operation);
 
 		response.setContentType("application/json");
 		response.setStatus(200);
-		response.getWriter().write(gson.toJson(ids));
+		response.getWriter().write(gson.toJson(results));
 	}
 
 }
