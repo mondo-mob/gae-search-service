@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.threewks.gae.searchservice.DateFieldFormatter.getDate;
 import static com.threewks.gae.searchservice.DateFieldFormatter.isDate;
 
 public class SearchServiceImpl {
+    private static final Logger LOG = Logger.getLogger(SearchServiceImpl.class.getName());
 
     private final SearchService searchService;
     private final FieldMapper fieldMapper;
@@ -36,6 +38,7 @@ public class SearchServiceImpl {
     }
 
     public void index(IndexOperation operation) {
+        LOG.info(String.format("Indexing %d entries", operation.getEntries().size()));
         List<Document> documents = operation.getEntries()
                 .stream()
                 .map(indexEntry -> {
@@ -53,7 +56,13 @@ public class SearchServiceImpl {
         index.put(documents);
     }
 
+    public void delete(DeleteOperation operation) {
+        LOG.info(String.format("Deleting index for %d entries", operation.getIds().size()));
+        getIndex(operation.getEntityName()).delete(operation.getIds());
+    }
+
     public int deleteAll(DeleteAllOperation operation) {
+        LOG.info(String.format("Deleting all indexes for %s", operation.getEntityName()));
         int count = 0;
         Index index = getIndex(operation.getEntityName());
         GetRequest request = GetRequest.newBuilder().setReturningIdsOnly(true).setLimit(200).build();
@@ -73,8 +82,9 @@ public class SearchServiceImpl {
     }
 
     public QueryResults query(QueryOperation operation) {
+        LOG.info(String.format("Running query for %s", operation.getEntityName()));
         String queryStr = toQuery(operation.getFields());
-        System.out.println("queryString " + queryStr);
+        LOG.info("queryString " + queryStr);
 
         Index index = getIndex(operation.getEntityName());
         Query query = Query.newBuilder()
@@ -106,7 +116,7 @@ public class SearchServiceImpl {
         }
 
         if (page != null) {
-            System.out.println(String.format("Setting limit to %d and offset to %d", page.getLimit(), page.getOffset()));
+            LOG.info(String.format("Setting limit to %d and offset to %d", page.getLimit(), page.getOffset()));
             builder.setLimit(page.getLimit());
             builder.setOffset(page.getOffset());
         }
