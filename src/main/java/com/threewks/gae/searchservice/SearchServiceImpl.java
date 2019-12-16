@@ -18,7 +18,6 @@ import com.google.appengine.api.search.SortOptions;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -124,19 +123,18 @@ public class SearchServiceImpl {
         return builder.build();
     }
 
-    private String toQuery(Map<String, Predicate> fields) {
-        return fields.keySet()
+    private String toQuery(List<Predicate> predicates) {
+        return predicates
                 .stream()
-                .map(fieldName -> getQueryFragment(fieldName, fields.get(fieldName)))
+                .map(this::getQueryFragment)
                 .collect(Collectors.joining(" "));
     }
 
-    private String getQueryFragment(String fieldName, Predicate predicate) {
+    private String getQueryFragment(Predicate predicate) {
         String prefix = predicate.getOp().equals("!=") ? "NOT " : "";
         String operator = predicate.getOp() != null && !predicate.getOp().equals("!=") ? predicate.getOp() : "=";
 
-
-        String fragment = String.format("%s%s %s ", prefix, fieldName.replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER), operator);
+        String fragment = String.format("%s%s %s ", prefix, predicate.getField().replaceAll("\\.", FieldMapper.NESTED_OBJECT_DELIMITER), operator);
         if (predicate.getValue() instanceof List) {
             List<String> values = (List<String>) predicate.getValue();
             String valueFragment = values.isEmpty() ? "__EMPTY_LIST_MASSIVE_HACK__" : String.join(" OR ", values);

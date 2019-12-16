@@ -1,9 +1,12 @@
 package com.threewks.gae.searchservice;
 
-public class Predicate  {
+public class Predicate {
 
+	private String field;
 	private String op;
 	private Object value;
+
+	public String getField() { return field; }
 
 	public String getOp() {
 		return op;
@@ -13,11 +16,12 @@ public class Predicate  {
 		return value;
 	}
 
-    @Override
-    public String toString() {
-        return "Predicate{" +
-                "op='" + op + '\'' +
-                ", value=" + value +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Predicate{" +
+			"field='" + field + '\'' +
+			", op='" + op + '\'' +
+			", value=" + value +
+			'}';
+	}
 }

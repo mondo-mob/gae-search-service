@@ -1,10 +1,10 @@
 package com.threewks.gae.searchservice;
 
-import java.util.Map;
+import java.util.List;
 
 public class QueryOperation {
     private String entityName;
-    private Map<String, Predicate> fields;
+    private List<Predicate> fields;
     private QuerySort sort;
     private QueryPage page;
 
@@ -12,7 +12,7 @@ public class QueryOperation {
         return entityName;
     }
 
-    public Map<String, Predicate> getFields() {
+    public List<Predicate> getFields() {
         return fields;
     }
 
