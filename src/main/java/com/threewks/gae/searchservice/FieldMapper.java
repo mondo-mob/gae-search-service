@@ -31,10 +31,14 @@ public class FieldMapper {
                     mappedFields.add(createTextField(key, field));
                 }
 
-            } else if (!isComplexObject && field instanceof Boolean) {
+            } else if (field instanceof Boolean) {
                 mappedFields.add(createTextField(key, field.toString()));
-            } else if (!isComplexObject && field instanceof Number) {
-                mappedFields.add(createNumberField(key, field));
+            } else if (field instanceof Number) {
+                if (isComplexObject) {
+                    mappedFields.add(createTextField(key, field.toString()));
+                } else {
+                    mappedFields.add(createNumberField(key, field));
+                }
             } else if (field instanceof List) {
                 List<Map<String, Object>> values = (List<Map<String, Object>>) field;
                 values.forEach(v -> mappedFields.addAll(toFields(key + NESTED_OBJECT_DELIMITER, v, true)));

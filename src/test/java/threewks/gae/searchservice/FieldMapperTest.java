@@ -42,7 +42,12 @@ public class FieldMapperTest {
 			"            \"user\": \"creator@growthops.com.au\"\n" +
 			"          }\n" +
 			"        },\n" +
-			"        \"paymentDate\": \"2019-03-31T13:00:00.000Z\"\n" +
+			"        \"paymentDate\": \"2019-03-31T13:00:00.000Z\",\n" +
+			"        \"account\": {\n" +
+			"          \"active\": true,\n" +
+			"          \"balance\": 1234.56,\n" +
+			"          \"code\": \"NAB\"\n" +
+			"        }\n" +
 			"      }";
 
 
@@ -54,7 +59,7 @@ public class FieldMapperTest {
 		List<Field> fields = mapper.map(fieldsInput);
 		System.out.println(fields);
 
-		assertThat(fields.size(), is(13));
+		assertThat(fields.size(), is(16));
 		assertField(fields.get(0), "orgId", "TIDSWELL");
 		assertField(fields.get(1), "status", "WithBank");
 		assertField(fields.get(2), "approvals__approver", "approver1@growthops.com.au");
@@ -69,6 +74,10 @@ public class FieldMapperTest {
 		assertField(fields.get(11), "audit__modified__user", "creator@growthops.com.au");
 		assertThat(fields.get(12).getName(), is("paymentDate"));
 		assertThat(fields.get(12).getDate(), is(notNullValue()));
+		assertField(fields.get(13), "account__active", "true");
+		assertField(fields.get(14), "account__balance", "1234.56");
+		assertField(fields.get(15), "account__code", "NAB");
+
 
 
 	}
