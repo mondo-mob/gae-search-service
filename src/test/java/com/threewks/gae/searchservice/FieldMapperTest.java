@@ -1,4 +1,4 @@
-package threewks.gae.searchservice;
+package com.threewks.gae.searchservice;
 
 import com.google.appengine.api.search.Field;
 import com.google.gson.Gson;
@@ -73,13 +73,10 @@ public class FieldMapperTest {
 		assertField(fields.get(10), "audit__modified__time", "2019-04-01T07:05:48.264Z");
 		assertField(fields.get(11), "audit__modified__user", "creator@growthops.com.au");
 		assertThat(fields.get(12).getName(), is("paymentDate"));
-		assertThat(fields.get(12).getDate(), is(notNullValue()));
+		assertThat(fields.get(12).getNumber(), is(1554037.2));
 		assertField(fields.get(13), "account__active", "true");
 		assertField(fields.get(14), "account__balance", "1234.56");
 		assertField(fields.get(15), "account__code", "NAB");
-
-
-
 	}
 
 	private void assertField(Field field, String expectedName, String expectedValue) {

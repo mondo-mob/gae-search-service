@@ -15,14 +15,13 @@ import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.appengine.api.search.SortExpression;
 import com.google.appengine.api.search.SortOptions;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.threewks.gae.searchservice.DateFieldFormatter.getDate;
+import static com.threewks.gae.searchservice.DateFieldFormatter.formatForSearch;
 import static com.threewks.gae.searchservice.DateFieldFormatter.isDate;
 
 public class SearchServiceImpl {
@@ -146,9 +145,7 @@ public class SearchServiceImpl {
 
     private Object getPredicateValue(Object value) {
         if (isDate(value)) {
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            return simpleDateFormat.format(getDate(value));
+            return formatForSearch(value);
         }
         return value;
     }

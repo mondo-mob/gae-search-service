@@ -3,11 +3,10 @@ package com.threewks.gae.searchservice;
 import com.google.appengine.api.search.Field;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.threewks.gae.searchservice.DateFieldFormatter.getDate;
+import static com.threewks.gae.searchservice.DateFieldFormatter.formatForSearch;
 import static com.threewks.gae.searchservice.DateFieldFormatter.isDate;
 
 public class FieldMapper {
@@ -54,9 +53,8 @@ public class FieldMapper {
     private Field createDateField(String key, Object value) {
         Field.Builder fieldBuilder = Field.newBuilder();
         fieldBuilder.setName(key);
-        Date date = getDate(value);
-        System.out.println(String.format("indexing date %s", date));
-        fieldBuilder.setDate(date);
+        Double dateToIndex = formatForSearch(value);
+        fieldBuilder.setNumber(dateToIndex);
         return fieldBuilder.build();
     }
 
