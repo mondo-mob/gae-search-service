@@ -17,34 +17,35 @@ public class FieldMapper {
         return toFields("", fields, false);
     }
 
-    private List<Field> toFields(String prefix, Map<String, Object> fields, boolean isComplexObject) {
+    private List<Field> toFields(String prefix, Object fields, boolean isComplexObject) {
         List<Field> mappedFields = new ArrayList<>();
 
-        for (String fieldName : fields.keySet()) {
-            String key = prefix + fieldName;
-            Object field = fields.get(fieldName);
-            if (field instanceof String) {
-                if (!isComplexObject && isDate(field)) {
-                    mappedFields.add(createDateField(key, field));
-                } else {
-                    mappedFields.add(createTextField(key, field));
-                }
-
-            } else if (field instanceof Boolean) {
-                mappedFields.add(createTextField(key, field.toString()));
-            } else if (field instanceof Number) {
-                if (isComplexObject) {
-                    mappedFields.add(createTextField(key, field.toString()));
-                } else {
-                    mappedFields.add(createNumberField(key, field));
-                }
-            } else if (field instanceof List) {
-                List<Map<String, Object>> values = (List<Map<String, Object>>) field;
-                values.forEach(v -> mappedFields.addAll(toFields(key + NESTED_OBJECT_DELIMITER, v, true)));
-
-            } else {
-                mappedFields.addAll(toFields(key + NESTED_OBJECT_DELIMITER, (Map<String, Object>) field, true));
+        if (fields instanceof Map) {
+            Map<String, Object> fieldsMap = (Map<String, Object>) fields;
+            for (String fieldName : fieldsMap.keySet()) {
+                boolean isNested = prefix.length() > 0;
+                String key = isNested ? String.format("%s%s%s", prefix, NESTED_OBJECT_DELIMITER, fieldName) : fieldName;
+                Object field = fieldsMap.get(fieldName);
+                mappedFields.addAll(toFields(key, field, isNested));
             }
+        } else if (fields instanceof String) {
+            if (!isComplexObject && isDate(fields)) {
+                mappedFields.add(createDateField(prefix, fields));
+            } else {
+                mappedFields.add(createTextField(prefix, fields));
+            }
+        } else if (fields instanceof Boolean) {
+            mappedFields.add(createTextField(prefix, fields.toString()));
+        } else if (fields instanceof Number) {
+            if (isComplexObject) {
+                mappedFields.add(createTextField(prefix, fields.toString()));
+            } else {
+                mappedFields.add(createNumberField(prefix, fields));
+            }
+        } else if (fields instanceof List) {
+            ((List) fields).forEach(v -> mappedFields.addAll(toFields(prefix, v, true)));
+        } else {
+            throw new RuntimeException(String.format("Unsupported type %s", fields.getClass().getSimpleName()));
         }
 
         return mappedFields;
