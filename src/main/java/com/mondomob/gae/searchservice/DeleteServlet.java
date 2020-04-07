@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

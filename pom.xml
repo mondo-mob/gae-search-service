@@ -22,8 +22,8 @@ limitations under the License.
     <!-- REQUIRED : your application must be packed as a .war to deploy on App Engine Standard -->
     <packaging>war</packaging>
 
-    <groupId>com.3wks</groupId>
-    <artifactId>gae.searchservice</artifactId>
+    <groupId>com.mondomob.gae</groupId>
+    <artifactId>gae-search-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <!-- [START properties] -->

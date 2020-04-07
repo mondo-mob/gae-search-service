@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
 import com.google.appengine.api.search.Document;
 import com.google.appengine.api.search.Field;
@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.threewks.gae.searchservice.DateFieldFormatter.formatForSearch;
-import static com.threewks.gae.searchservice.DateFieldFormatter.isDate;
+import static com.mondomob.gae.searchservice.DateFieldFormatter.formatForSearch;
+import static com.mondomob.gae.searchservice.DateFieldFormatter.isDate;
 
 public class SearchServiceImpl {
     private static final Logger LOG = Logger.getLogger(SearchServiceImpl.class.getName());

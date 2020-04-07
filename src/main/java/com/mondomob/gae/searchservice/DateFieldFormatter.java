@@ -1,9 +1,8 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
-import com.threewks.gae.searchservice.converter.InstantToDoubleConverter;
+import com.mondomob.gae.searchservice.converter.InstantToDoubleConverter;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.logging.Logger;
 
 public class DateFieldFormatter {

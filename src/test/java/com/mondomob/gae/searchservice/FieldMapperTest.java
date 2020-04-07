@@ -1,9 +1,8 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
 import com.google.appengine.api.search.Field;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.threewks.gae.searchservice.FieldMapper;
 import org.junit.Test;
 
 import java.util.List;

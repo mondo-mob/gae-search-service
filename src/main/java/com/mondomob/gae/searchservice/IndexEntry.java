@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
 import java.util.Map;
 

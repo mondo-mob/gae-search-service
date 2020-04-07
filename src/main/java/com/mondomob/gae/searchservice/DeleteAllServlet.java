@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,16 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "Query", value = "/query")
-public class QueryServlet extends HttpServlet {
+@WebServlet(name = "DeleteAll", value = "/deleteAll")
+public class DeleteAllServlet extends HttpServlet {
 
 	private final Gson gson;
 	private final SearchServiceImpl searchService;
 
-	public QueryServlet() {
+	public DeleteAllServlet() {
 		this.gson = new GsonBuilder().create();
 		this.searchService = new SearchServiceImpl();
 	}
@@ -28,13 +27,13 @@ public class QueryServlet extends HttpServlet {
 
 		String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-		QueryOperation operation = gson.fromJson(body, QueryOperation.class);
+		DeleteAllOperation operation = gson.fromJson(body, DeleteAllOperation.class);
 
-		QueryResults results = searchService.query(operation);
+		int count = searchService.deleteAll(operation);
+		System.out.println(String.format("Deleted %s indexes", count));
 
-		response.setContentType("application/json");
-		response.setStatus(200);
-		response.getWriter().write(gson.toJson(results));
+		response.setContentType("text/plain");
+		response.setStatus(204);
 	}
 
 }

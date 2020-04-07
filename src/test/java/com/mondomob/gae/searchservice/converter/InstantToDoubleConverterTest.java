@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice.converter;
+package com.mondomob.gae.searchservice.converter;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice;
+package com.mondomob.gae.searchservice;
 
 import com.google.appengine.api.search.Field;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.threewks.gae.searchservice.DateFieldFormatter.formatForSearch;
-import static com.threewks.gae.searchservice.DateFieldFormatter.isDate;
+import static com.mondomob.gae.searchservice.DateFieldFormatter.formatForSearch;
+import static com.mondomob.gae.searchservice.DateFieldFormatter.isDate;
 
 public class FieldMapper {
 

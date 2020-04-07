@@ -1,4 +1,4 @@
-package com.threewks.gae.searchservice.converter;
+package com.mondomob.gae.searchservice.converter;
 
 @FunctionalInterface
 interface Converter<F, T> {
