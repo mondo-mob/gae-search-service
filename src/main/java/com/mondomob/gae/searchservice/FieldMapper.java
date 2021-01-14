@@ -20,6 +20,10 @@ public class FieldMapper {
     private List<Field> toFields(String prefix, Object fields, boolean isComplexObject) {
         List<Field> mappedFields = new ArrayList<>();
 
+        if (fields == null) {
+            return mappedFields;
+        }
+
         if (fields instanceof Map) {
             Map<String, Object> fieldsMap = (Map<String, Object>) fields;
             for (String fieldName : fieldsMap.keySet()) {

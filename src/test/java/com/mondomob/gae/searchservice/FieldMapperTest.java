@@ -10,7 +10,6 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 public class FieldMapperTest {
 
@@ -19,6 +18,7 @@ public class FieldMapperTest {
 	private String payload = "{\n" +
 			"        \"orgId\": \"MYORG\",\n" +
 			"        \"status\": \"Processed\",\n" +
+			"        \"accountId\": null,\n" +
 			"        \"approvals\": [\n" +
 			"          {\n" +
 			"            \"approver\": \"approver1@example.com\",\n" +
@@ -45,15 +45,16 @@ public class FieldMapperTest {
 			"        \"account\": {\n" +
 			"          \"active\": true,\n" +
 			"          \"balance\": 1234.56,\n" +
-			"          \"code\": \"NAB\"\n" +
+			"          \"code\": \"NAB\",\n" +
+			"          \"expiry\": null\n" +
 			"        },\n" +
-            "        \"members\": [\n" +
-            "          \"user-1\",\n" +
-            "          \"user-2\",\n" +
-            "          \"user-3\"\n" +
-            "        ]\n" +
+			"        \"members\": [\n" +
+			"          \"user-1\",\n" +
+			"          \"user-2\",\n" +
+			"          null,\n" +
+			"          \"user-3\"\n" +
+			"        ]\n" +
 			"      }";
-
 
 	@Test
 	public void shouldMap() {
