@@ -14,6 +14,7 @@ import com.google.appengine.api.search.SearchService;
 import com.google.appengine.api.search.SearchServiceFactory;
 import com.google.appengine.api.search.SortExpression;
 import com.google.appengine.api.search.SortOptions;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +148,8 @@ public class SearchServiceImpl {
         if (isDate(value)) {
             return formatForSearch(value);
         }
-        return value;
+
+        return String.format("\"%s\"", StringEscapeUtils.escapeJava((value.toString())));
     }
 
     private Index getIndex(String name) {
